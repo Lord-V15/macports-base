@@ -35,7 +35,7 @@ proc porttest::test_main {args} {
     if {[tbool test.run]} {
         command_exec -callback portprogress::target_progress_callback test
     } else {
-    return -code error [format [msgcat::mc "%s has no tests turned on. see 'test.run' in portfile(7)"] $subport]
+    return -code error [format [msgcat::mc "\033\[31m %s has no tests turned on. see 'test.run' in portfile(7)"] $subport]
     }
     return 0
 }
