@@ -1524,34 +1524,34 @@ proc portconfigure::configure_main {args} {
     }
 
     set callback [list "-callback" portprogress::target_progress_callback]
-
+# HERE IS WHERE ALL THE ERROR CODES ARE BEING RETURNED SO I'VE PUT IN '\033\[31m' BEFORE ALL THE RETURNED STRINGS TO MAKE THEM RED
     if {[tbool use_autoreconf]} {
         if {[catch {command_exec {*}${callback} autoreconf} result]} {
-            return -code error "[format [msgcat::mc "%s failure: %s"] autoreconf $result]"
+            return -code error "[format [msgcat::mc "\033\[31m %s failure: %s"] autoreconf $result]"
         }
     }
 
     if {[tbool use_automake]} {
         if {[catch {command_exec {*}${callback} automake} result]} {
-            return -code error "[format [msgcat::mc "%s failure: %s"] automake $result]"
+            return -code error "[format [msgcat::mc "\033\[31m %s failure: %s"] automake $result]"
         }
     }
 
     if {[tbool use_autoconf]} {
         if {[catch {command_exec {*}${callback} autoconf} result]} {
-            return -code error "[format [msgcat::mc "%s failure: %s"] autoconf $result]"
+            return -code error "[format [msgcat::mc "\033\[31m %s failure: %s"] autoconf $result]"
         }
     }
 
     if {[tbool use_xmkmf]} {
         parse_environment xmkmf
         if {[catch {command_exec {*}${callback} xmkmf} result]} {
-            return -code error "[format [msgcat::mc "%s failure: %s"] xmkmf $result]"
+            return -code error "[format [msgcat::mc "\033\[31m %s failure: %s"] xmkmf $result]"
         }
 
         parse_environment xmkmf
         if {[catch {command_exec {*}${callback} "cd ${worksrcpath} && make Makefiles" -varprefix xmkmf} result]} {
-            return -code error "[format [msgcat::mc "%s failure: %s"] "make Makefiles" $result]"
+            return -code error "[format [msgcat::mc "\033\[31m %s failure: %s"] "make Makefiles" $result]"
         }
     } elseif {[tbool use_configure]} {
         # Merge (ld|c|cpp|cxx)flags into the environment variable.
@@ -1643,9 +1643,9 @@ proc portconfigure::configure_main {args} {
         if {[catch {command_exec {*}${callback} configure} result]} {
             global configure.dir
             if {[file exists ${configure.dir}/config.log]} {
-                ui_error "[format [msgcat::mc "Failed to configure %s, consult %s/config.log"] [option subport] ${configure.dir}]"
+                ui_error "[format [msgcat::mc "\033\[31m Failed to configure %s, consult %s/config.log"] [option subport] ${configure.dir}]"
             }
-            return -code error "[format [msgcat::mc "%s failure: %s"] configure $result]"
+            return -code error "[format [msgcat::mc "\033\[31m %s failure: %s"] configure $result]"
         }
     }
     return 0
